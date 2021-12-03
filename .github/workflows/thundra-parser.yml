@@ -1,4 +1,4 @@
-name: Test
+name: Thundra Parser
 
 on:
   workflow_dispatch:
