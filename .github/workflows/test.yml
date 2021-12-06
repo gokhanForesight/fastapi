@@ -26,7 +26,6 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
           pip install flit
-          pip install pytest-parallel
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: flit install --symlink
@@ -38,7 +37,9 @@ jobs:
           test_disable: false
           agent_version: 3.0.0
       - name: Test
-        run: bash scripts/test.sh
+        run: |
+          pip install pytest-parallel
+          bash scripts/test.sh
         env:
           THUNDRA_AGENT_REPORT_REST_BASEURL: https://collector.thundra.me/v1
           THUNDRA_AGENT_DEBUG_ENABLE: true
