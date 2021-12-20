@@ -9,5 +9,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Run Python Help
-        run: python --help
+      - name: Run Python Version
+        run: python --version
+      - name: Run Pip Version
+        run: pip --version
