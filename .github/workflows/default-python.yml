@@ -13,3 +13,7 @@ jobs:
         run: python --version
       - name: Run Pip Version
         run: pip --version
+      - name: Run Node Version
+        run: node --version
+      - name: Run Npm Version
+        run: npm --version
