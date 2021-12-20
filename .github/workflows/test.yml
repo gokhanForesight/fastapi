@@ -6,13 +6,27 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.9]
+      fail-fast: false
 
     steps:
       - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: actions/cache@v2
+        id: cache
+        with:
+          path: ${{ env.pythonLocation }}
+          key: ${{ runner.os }}-python-${{ env.pythonLocation }}-${{ hashFiles('pyproject.toml') }}-test
       - name: Install Flit
-        run: |
-          pip install flit
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: pip install flit
       - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: flit install --symlink
       - name: Install Thundra Python Agent
         uses: thundra-io/thundra-foresight-python-action@v1
@@ -22,9 +36,7 @@ jobs:
           test_disable: false
           agent_version: 3.0.0
       - name: Test
-        run: |
-          pip install pytest-parallel
-          bash scripts/test.sh
+        run: bash scripts/test.sh
         env:
           THUNDRA_AGENT_REPORT_REST_BASEURL: https://collector.thundra.me/v1
           THUNDRA_AGENT_DEBUG_ENABLE: true
