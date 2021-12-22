@@ -1,4 +1,4 @@
-name: Python Deneme
+name: Launchable Deneme
 
 on:
   workflow_dispatch:
