@@ -33,6 +33,7 @@ jobs:
       - name: Run Tests
         run: |
           pytest tests --junit-xml=test-results/results.xml
+          launchable record build --name deneme-launchable --source .
           launchable record tests --build deneme-launchable pytest ./test-results/
         env:
           LAUNCHABLE_TOKEN: v1:deneme-corp/deneme:88421e41e1b94ef3a9aaa5e245876a1d
