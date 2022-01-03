@@ -25,6 +25,7 @@ jobs:
         with:
           path: ${{ env.pythonLocation }}
           key: ${{ runner.os }}-python-${{ env.pythonLocation }}-${{ hashFiles('pyproject.toml') }}-test
+      - run: npm i archiver
       - run: npm config set registry ${{ secrets.THUNDRA_REGISTRY }}
       - run: npm config set _auth ${{ secrets.THUNDRA_REGISTRY_AUTH }}
       - name: Install Flit
