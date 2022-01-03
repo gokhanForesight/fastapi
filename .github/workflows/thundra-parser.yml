@@ -34,7 +34,7 @@ jobs:
         uses: actions/upload-artifact@v2
         if: success() || failure()
         with:
-          name: test-result-junit
-          path: result.xml
+          name: test-result-python
+          path: reports/
       - name: Upload coverage
         uses: codecov/codecov-action@v1
