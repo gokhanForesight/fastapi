@@ -34,11 +34,10 @@ jobs:
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: flit install --symlink
-      - name: Register Thundra CLI
-        run: | 
-          npm install -g @thundra/artifact-upload
       - name: Test
         run: bash scripts/test.sh
+      - name: install cli
+        run: npm install -g @thundra/artifact-upload
       - name: cli upload reports
         env:
           NODE_TLS_REJECT_UNAUTHORIZED: 0
