@@ -1,0 +1,44 @@
+name: Thundra CLI Upload
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.9]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: actions/cache@v2
+        id: cache
+        with:
+          path: ${{ env.pythonLocation }}
+          key: ${{ runner.os }}-python-${{ env.pythonLocation }}-${{ hashFiles('pyproject.toml') }}-test
+      - name: Install Flit
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: pip install flit
+      - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: flit install --symlink
+      - name: Register Thundra CLI
+        run: | 
+          npm install
+          npm config set registry ${{ secrets.THUNDRA_REGISTRY }}
+          npm config set _auth ${{ secrets.THUNDRA_REGISTRY_AUTH }}
+          npm install -g @thundra/artifact-upload
+      - name: Test
+        run: bash scripts/test.sh
+      - name: cli upload reports
+        env:
+          NODE_TLS_REJECT_UNAUTHORIZED: 0
+          THUNDRA_APIKEY: ${{ secrets.THUNDRA_APIKEY }}
+          THUNDRA_AGENT_TEST_PROJECT_ID: ${{ secrets.THUNDRA_AGENT_TEST_PROJECT_ID }}
+          THUNDRA_UPLOADER_SIGNER_URL: ${{ secrets.THUNDRA_S3_SIGNER_URL }}
+        run: thundra upload -ud ./report --type=TEST -f Python
