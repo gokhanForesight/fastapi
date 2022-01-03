@@ -41,4 +41,4 @@ jobs:
           THUNDRA_APIKEY: ${{ secrets.THUNDRA_APIKEY }}
           THUNDRA_AGENT_TEST_PROJECT_ID: ${{ secrets.THUNDRA_AGENT_TEST_PROJECT_ID }}
           THUNDRA_UPLOADER_SIGNER_URL: ${{ secrets.THUNDRA_S3_SIGNER_URL }}
-        run: thundra upload -ud ./reports --type=TEST -f Python
+        run: thundra upload -ud ./reports --type=TEST -f PYTHON
