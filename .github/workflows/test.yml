@@ -40,5 +40,3 @@ jobs:
         env:
           THUNDRA_AGENT_REPORT_REST_BASEURL: https://collector.thundra.me/v1
           THUNDRA_AGENT_DEBUG_ENABLE: true
-      - name: Upload coverage
-        uses: codecov/codecov-action@v1
